@@ -1,0 +1,1 @@
+This project makes use of Python's if/else statements, loops, and functions, employing various control flow mechanisms such as if, if ... else, break, continue, and pass, alongside range statements within while and for loops. Additionally, I implemented custom Python functions to explore variable scoping, tracebacks, and arithmetic operations
