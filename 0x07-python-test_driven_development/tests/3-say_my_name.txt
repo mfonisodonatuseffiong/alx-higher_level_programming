@@ -10,17 +10,17 @@ Importing function from the module:
 
 Passing first_name and last_name correctly
 
-    >>> say_my_name("Leonard", "Odoi")
-    My name is Leonard Odoi
+    >>> say_my_name("Mfoniso", "Donatus")
+    My name is Mfoniso Donatus
 
 Passing first_name and last_name correctly 2
 
-    >>> say_my_name("Leo")
-    My name is Leo
+    >>> say_my_name("Mfoniso")
+    My name is Mfoniso
 
 Passing None as the last_name
 
-    >>> say_my_name("Leonard", None)
+    >>> say_my_name("Mfoniso", None)
     Traceback (most recent call last):
     	      ...
     TypeError: last_name must be a string
@@ -41,7 +41,7 @@ Passing a number as the first_name
 
 Passing a number as the last_name
 
-    >>> say_my_name("Leonard", 0)
+    >>> say_my_name("Mfoniso", 0)
     Traceback (most recent call last):
     	      ...
     TypeError: last_name must be a string
