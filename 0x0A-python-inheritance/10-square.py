@@ -1,37 +1,16 @@
 #!/usr/bin/python3
-"""Module 10-square.
-Creates a Square class.
-"""
-
-
-BaseGeometry = __import__('7-base_geometry').BaseGeometry
+"""Defines a Rectangle subclass Square."""
 Rectangle = __import__('9-rectangle').Rectangle
 
 
 class Square(Rectangle):
-    """Represents a square.
-    Private instance attribute size.
-    Public method area().
-    Inherits from Rectangle.
-    """
+    """Represent a square."""
 
     def __init__(self, size):
-        """Initializes a Square.
-
+        """Initialize a new square.
         Args:
-            - size: size of the square
+            size (int): The size of the new square.
         """
-
         self.integer_validator("size", size)
         super().__init__(size, size)
-        self.__size = size
-
-    def __str__(self):
-        return super().__str__()
-
-    def area(self):
-        """Computes the area of a Square instance.
-        Overwrites the area() method from Rectangle.
-        """
-
-        return self.__size ** 2
+        self.__size = size 

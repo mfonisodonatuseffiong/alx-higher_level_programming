@@ -1,19 +1,13 @@
 
-dule 3-is_kind_of_class.
-Finds if the object is an instance of, or if the object is an
-instance of a class that inherited from, the specified class.
+#!/usr/bin/python3
+"""checks if object is an instance of a class
+or an inherited class
 """
 
 
 def is_kind_of_class(obj, a_class):
-    """Finds if obj is an instance of a_class or a class
-    inherited from a_class.
-
-    Args:
-        - obj: object to look at
-        - a_class: class to evaluate
-
-    Returns: True or False
+    """returns true if object is an instance of a class
+    or a class that the class in question inherits from
     """
+    return (isinstance(obj, a_class))
 
-    return isinstance(obj, a_class)
