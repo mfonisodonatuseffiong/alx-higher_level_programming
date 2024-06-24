@@ -1,32 +1,36 @@
 #!/usr/bin/python3
-'''lists all cities from database'''
+"""Lists all cities from database"""
 
 if __name__ == "__main__":
     import MySQLdb
     from sys import argv
 
-    # connect
-    db = MySQLdb.connect(host='localhost',
-                         port=3306,
-                         user=argv[1],
-                         passwd=argv[2],
-                         db=argv[3])
+    # Connect to the database
+    db = MySQLdb.connect(
+        host='localhost',
+        port=3306,
+        user=argv[1],
+        passwd=argv[2],
+        db=argv[3]
+    )
 
-    # cursor
+    # Create a cursor object
     c = db.cursor()
 
-    # execute
-    cmd = "SELECT cities.id, cities.name, states.name FROM cities\
-    JOIN states ON cities.state_id = states.id"
+    # Execute the query
+    cmd = (
+        "SELECT cities.id, cities.name, states.name "
+        "FROM cities JOIN states ON cities.state_id = states.id"
+    )
     c.execute(cmd)
 
-    # fetch
+    # Fetch all rows
     rows = c.fetchall()
 
-    # print
+    # Print the rows
     for row in rows:
         print(row)
 
-    # close
+    # Close the cursor and connection
     c.close()
     db.close()
