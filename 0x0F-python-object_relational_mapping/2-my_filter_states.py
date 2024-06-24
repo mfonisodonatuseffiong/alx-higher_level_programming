@@ -15,9 +15,9 @@ if __name__ == '__main__':
     from the database.
     """
     db = MySQLdb.connect(
-        host="127.0.0.1",  # Use '127.0.0.1' to connect via TCP/IP
-        port=3306,
+        host="localhost",
         user=argv[1],
+        port=3306,
         passwd=argv[2],
         db=argv[3]
     )
