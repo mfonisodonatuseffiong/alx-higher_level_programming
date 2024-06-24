@@ -1,38 +1,37 @@
 #!/usr/bin/python3
 """Filter states by user input"""
-
 import MySQLdb
-from sys import argv
+
 
 def main():
+
     if len(argv) == 5:
-        # Connect to the database
-        db = MySQLdb.connect(
-            host='localhost',
-            port=3306,
-            user=argv[1],
-            passwd=argv[2],
-            db=argv[3]
-        )
-        
-        # Create a cursor object
+        # connect
+        db = MySQLdb.connect(host='localhost',
+                             port=3306,
+                             user=argv[1],
+                             passwd=argv[2],
+                             db=argv[3])
+        # cursor
         c = db.cursor()
-        
-        # Execute the query
-        c.execute("SELECT * FROM states WHERE name = %s ORDER BY states.id ASC", (argv[4],))
-        
-        # Fetch all rows
+
+        # execute query
+        c.execute("SELECT * FROM states WHERE name = %s\
+        ORDER BY states.id ASC", (argv[4], ))
+
+        # fetch
         rows = c.fetchall()
-        
-        # Print the rows
+
+        # print
         for row in rows:
             print(row)
-        
-        # Close the cursor and connection
+
+        # close
         c.close()
         db.close()
     else:
         return
 
 if __name__ == "__main__":
+    from sys import argv
     main()
