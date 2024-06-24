@@ -9,7 +9,7 @@ def main():
     """Main function to connect to the database and fetch states by user input"""
     # connect
     db = MySQLdb.connect(
-        host='localhost',
+        host='127.0.0.1',  # Use '127.0.0.1' to connect via TCP/IP
         port=3306,
         user=argv[1],
         passwd=argv[2],
