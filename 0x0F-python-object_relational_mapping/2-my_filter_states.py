@@ -1,38 +1,36 @@
 #!/usr/bin/python3
-"""Filter states by user input"""
+"""
+This script takes in an argument and
+displays all values in the states
+where `name` matches the argument
+from the database `hbtn_0e_0_usa`.
+"""
 
 import MySQLdb
 from sys import argv
 
-
-def main():
-    """Main function to connect to the database and fetch states by user input"""
-    # connect
+if __name__ == '__main__':
+    """
+    Access to the database and get the states
+    from the database.
+    """
     db = MySQLdb.connect(
-        host='127.0.0.1',  # Use '127.0.0.1' to connect via TCP/IP
-        port=3306,
+        host="localhost",
         user=argv[1],
+        port=3306,
         passwd=argv[2],
         db=argv[3]
     )
 
-    # cursor
-    c = db.cursor()
+    cur = db.cursor()
+    cur.execute(
+        "SELECT * FROM states WHERE name LIKE BINARY %s ORDER BY states.id ASC",
+        (argv[4],)
+    )
+    rows = cur.fetchall()
 
-    # execute query
-    c.execute("SELECT * FROM states WHERE BINARY name = %s ORDER BY id ASC", (argv[4],))
-
-    # fetch
-    rows = c.fetchall()
-
-    # print
     for row in rows:
         print(row)
 
-    # close
-    c.close()
+    cur.close()
     db.close()
-
-
-if __name__ == "__main__":
-    main()
