@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-'''Script to list all states with a name starting with N'''
-
+"""Script to list all states with a name starting with N"""
 
 if __name__ == "__main__":
     from sys import argv
@@ -17,8 +16,8 @@ if __name__ == "__main__":
     c = db.cursor()
 
     # execute query
-    c.execute("SELECT * FROM states WHERE\
-    name LIKE BINARY 'N%' ORDER BY states.id")
+    c.execute("SELECT * FROM states WHERE "
+              "name LIKE BINARY 'N%' ORDER BY states.id")
 
     # fetch and print
     rows = c.fetchall()
