@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Lists all State objects that contain the letter a from the database hbtn_0e_6_usa"""
+"""Print the State object with the name passed as argument from the database hbtn_0e_6_usa"""
 
 if __name__ == "__main__":
     from model_state import Base, State
@@ -7,11 +7,11 @@ if __name__ == "__main__":
     from sqlalchemy import create_engine
     from sqlalchemy.orm import sessionmaker
 
-    if len(argv) != 4:
-        print(f"Usage: {argv[0]} <mysql username> <mysql password> <database name>")
+    if len(argv) != 5:
+        print(f"Usage: {argv[0]} <mysql username> <mysql password> <database name> <state name>")
         exit(1)
 
-    username, password, db_name = argv[1], argv[2], argv[3]
+    username, password, db_name, state_name = argv[1], argv[2], argv[3], argv[4]
 
     # Create the database engine
     engine = create_engine(
@@ -26,12 +26,14 @@ if __name__ == "__main__":
     # Create a session
     session = Session()
 
-    # Query all State objects that contain the letter 'a' and order by state id
-    query = session.query(State).filter(State.name.like('%a%')).order_by(State.id)
+    # Query for the State object with the specified name
+    state = session.query(State).filter(State.name == state_name).first()
 
-    # Print results
-    for state in query.all():
-        print(f"{state.id}: {state.name}")
+    # Print result
+    if state:
+        print(f"{state.id}")
+    else:
+        print("Not found")
 
     # Close the session
     session.close()
