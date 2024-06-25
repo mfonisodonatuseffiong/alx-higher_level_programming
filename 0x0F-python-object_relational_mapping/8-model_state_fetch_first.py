@@ -1,40 +1,38 @@
 #!/usr/bin/python3
-"""Print the first State object from the database"""
+"""Print the first State object from the database hbtn_0e_6_usa"""
 
 if __name__ == "__main__":
     from sqlalchemy import create_engine
-    from sqlalchemy.orm import Session
+    from sqlalchemy.orm import sessionmaker
     from sys import argv
     from model_state import Base, State
-    from sqlalchemy.engine.url import URL
 
-    # URL
-    url = {
-        'drivername': 'mysql+mysqldb',
-        'host': 'localhost',
-        'port': '3306',
-        'username': argv[1],
-        'password': argv[2],
-        'database': argv[3]
-    }
+    if len(argv) != 4:
+        print("Usage: {} <mysql username> <mysql password> <database name>".format(argv[0]))
+        exit(1)
 
-    c_url = URL(**url)
+    username, password, db_name = argv[1], argv[2], argv[3]
 
-    # Create engine and metadata for stored objects
-    engine = create_engine(c_url, pool_pre_ping=True)
+    # Create the database engine
+    engine = create_engine(
+        f'mysql+mysqldb://{username}:{password}@localhost:3306/{db_name}',
+        pool_pre_ping=True
+    )
     Base.metadata.create_all(engine)
 
-    # Session
-    session = Session(engine)
+    # Create a configured "Session" class
+    Session = sessionmaker(bind=engine)
+
+    # Create a session
+    session = Session()
 
     try:
-        first = session.query(State).first()
-        if first is not None:
-            print("{}: {}".format(first.id, first.name))
+        first_state = session.query(State).order_by(State.id).first()
+        if first_state:
+            print(f"{first_state.id}: {first_state.name}")
         else:
             print("Nothing")
     except Exception as e:
         print(f"Error: {e}")
-
-    # Close session
-    session.close()
+    finally:
+        session.close()
