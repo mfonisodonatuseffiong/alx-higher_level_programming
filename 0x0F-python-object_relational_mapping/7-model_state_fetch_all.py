@@ -1,29 +1,37 @@
 #!/usr/bin/python3
-"""List all state objects from the database"""
+"""List all State objects from the database hbtn_0e_6_usa"""
 
 if __name__ == "__main__":
     from sqlalchemy import create_engine
-    from sqlalchemy.orm import Session
+    from sqlalchemy.orm import sessionmaker
     from sys import argv
     from model_state import Base, State
-    from sqlalchemy.engine.url import URL
 
-    db = {
-        'drivername': 'mysql+mysqldb',
-        'host': 'localhost',
-        'port': '3306',
-        'username': argv[1],
-        'password': argv[2],
-        'database': argv[3]
-    }
+    if len(argv) != 4:
+        print("Usage: {} <mysql username> <mysql password> <database name>".format(argv[0]))
+        exit(1)
 
-    url = URL(**db)
-    engine = create_engine(url, pool_pre_ping=True)
+    username, password, db_name = argv[1], argv[2], argv[3]
+
+    # Create the database engine
+    engine = create_engine(
+        f'mysql+mysqldb://{username}:{password}@localhost:3306/{db_name}',
+        pool_pre_ping=True
+    )
     Base.metadata.create_all(engine)
 
-    session = Session(engine)
+    # Create a configured "Session" class
+    Session = sessionmaker(bind=engine)
 
-    for state in session.query(State).order_by(State.id).all():
-        print("{}: {}".format(state.id, state.name))
+    # Create a session
+    session = Session()
 
+    # Query all State objects and order by state id
+    states = session.query(State).order_by(State.id).all()
+
+    # Print results
+    for state in states:
+        print(f"{state.id}: {state.name}")
+
+    # Close the session
     session.close()
