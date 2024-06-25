@@ -4,10 +4,10 @@
 if __name__ == "__main__":
     from sqlalchemy import create_engine
     from sqlalchemy.orm import sessionmaker
+    from sqlalchemy.engine.url import URL
     from relationship_city import City
     from relationship_state import Base, State
     from sys import argv
-    from sqlalchemy.engine.url import URL
 
     if len(argv) != 4:
         print(f"Usage: {argv[0]} <mysql username> <mysql password> <database name>")
