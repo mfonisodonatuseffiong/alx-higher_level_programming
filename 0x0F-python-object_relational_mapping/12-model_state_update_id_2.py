@@ -1,26 +1,38 @@
 #!/usr/bin/python3
-# changes the name of a State object
-
+"""Changes the name of a State object from the database hbtn_0e_6_usa"""
 
 if __name__ == "__main__":
-    from sqlalchemy.engine import create_engine
-    from sqlalchemy.engine.url import URL
-    from sqlalchemy.orm import Session
     from model_state import Base, State
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
     from sys import argv
 
-    db = {'drivername': 'mysql+mysqldb',
-          'host': 'localhost',
-          'port': '3306',
-          'username': argv[1],
-          'password': argv[2],
-          'database': argv[3]}
+    if len(argv) != 4:
+        print(f"Usage: {argv[0]} <mysql username> <mysql password> <database name>")
+        exit(1)
 
-    url = URL(**db)
-    engine = create_engine(url, pool_pre_ping=True)
+    username, password, db_name = argv[1], argv[2], argv[3]
+
+    # Create the database engine
+    engine = create_engine(
+        f'mysql+mysqldb://{username}:{password}@localhost:3306/{db_name}',
+        pool_pre_ping=True
+    )
     Base.metadata.create_all(engine)
 
-    session = Session(engine)
-    row = session.query(State).filter(State.id == 2).first()
-    row.name = 'New Mexico'
-    session.commit()
+    # Create a configured "Session" class
+    Session = sessionmaker(bind=engine)
+
+    # Create a session
+    session = Session()
+
+    # Query for the State object with id = 2
+    state_to_update = session.query(State).filter(State.id == 2).first()
+
+    # Check if the state exists and update its name
+    if state_to_update:
+        state_to_update.name = "New Mexico"
+        session.commit()
+
+    # Close the session
+    session.close()
