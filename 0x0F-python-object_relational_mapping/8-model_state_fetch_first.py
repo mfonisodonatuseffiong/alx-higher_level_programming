@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# print first state objects from the database
+"""Print the first State object from the database"""
 
 if __name__ == "__main__":
     from sqlalchemy import create_engine
@@ -8,28 +8,33 @@ if __name__ == "__main__":
     from model_state import Base, State
     from sqlalchemy.engine.url import URL
 
-    # url
-    url = {'drivername': 'mysql+mysqldb',
-           'host': 'localhost',
-           'port': '3306',
-           'username': argv[1],
-           'password': argv[2],
-           'database': argv[3]}
+    # URL
+    url = {
+        'drivername': 'mysql+mysqldb',
+        'host': 'localhost',
+        'port': '3306',
+        'username': argv[1],
+        'password': argv[2],
+        'database': argv[3]
+    }
 
     c_url = URL(**url)
 
-    # create engine, metadata for stored objects
+    # Create engine and metadata for stored objects
     engine = create_engine(c_url, pool_pre_ping=True)
     Base.metadata.create_all(engine)
 
-    # session
+    # Session
     session = Session(engine)
 
     try:
         first = session.query(State).first()
-        print("{}: {}".format(first.id, first.name))
-    except:
-        print('Nothing')
+        if first is not None:
+            print("{}: {}".format(first.id, first.name))
+        else:
+            print("Nothing")
+    except Exception as e:
+        print(f"Error: {e}")
 
-    # close
+    # Close session
     session.close()
