@@ -1,33 +1,37 @@
 #!/usr/bin/python3
-# lists all State objects that contain the letter a from a database
-
+"""Lists all State objects that contain the letter a from the database hbtn_0e_6_usa"""
 
 if __name__ == "__main__":
     from model_state import Base, State
     from sys import argv
-    import sqlalchemy
-    from sqlalchemy.engine.url import URL
     from sqlalchemy import create_engine
-    from sqlalchemy.orm import Session
+    from sqlalchemy.orm import sessionmaker
 
-    mysql = {'drivername': 'mysql+mysqldb',
-             'host': 'localhost',
-             'port': '3306',
-             'username': argv[1],
-             'password': argv[2],
-             'database': argv[3],
-             }
+    if len(argv) != 4:
+        print(f"Usage: {argv[0]} <mysql username> <mysql password> <database name>")
+        exit(1)
 
-    url = URL(**mysql)
+    username, password, db_name = argv[1], argv[2], argv[3]
 
-    engine = create_engine(url, pool_pre_ping=True)
+    # Create the database engine
+    engine = create_engine(
+        f'mysql+mysqldb://{username}:{password}@localhost:3306/{db_name}',
+        pool_pre_ping=True
+    )
     Base.metadata.create_all(engine)
 
-    session = Session(engine)
+    # Create a configured "Session" class
+    Session = sessionmaker(bind=engine)
 
-    query = session.query(State).filter(State.name.like('%a%'))\
-                                .order_by(State.id)
-    for r in query.all():
-        print("{}: {}".format(r.id, r.name))
+    # Create a session
+    session = Session()
 
+    # Query all State objects that contain the letter 'a' and order by state id
+    query = session.query(State).filter(State.name.like('%a%')).order_by(State.id)
+
+    # Print results
+    for state in query.all():
+        print(f"{state.id}: {state.name}")
+
+    # Close the session
     session.close()
