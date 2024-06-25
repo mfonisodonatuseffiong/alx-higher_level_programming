@@ -28,8 +28,8 @@ if __name__ == "__main__":
     session = Session()
 
     # Query all City objects joined with State and sorted by city id
-    query = session.query(State.name, City)\
-                   .filter(State.id == City.state_id)\
+    query = session.query(State.name, City) \
+                   .filter(State.id == City.state_id) \
                    .order_by(City.id).all()
 
     # Print results
