@@ -1,40 +1,33 @@
 #!/usr/bin/python3
-"""Script to create City and State objects"""
+"""Script to create State 'California' with City 'San Francisco'"""
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from relationship_state import Base, State
+from relationship_city import City
+import sys
 
 if __name__ == "__main__":
-    from sqlalchemy import create_engine
-    from sqlalchemy.orm import sessionmaker
-    from sqlalchemy.engine.url import URL
-    from relationship_city import City
-    from relationship_state import Base, State
-    from sys import argv
+    if len(sys.argv) != 4:
+        print("Usage: ./100-relationship_states_cities.py <mysql username> <mysql password> <database name>")
+        sys.exit(1)
 
-    if len(argv) != 4:
-        print(f"Usage: {argv[0]} <mysql username> <mysql password> <database name>")
-        exit(1)
+    username = sys.argv[1]
+    password = sys.argv[2]
+    db_name = sys.argv[3]
 
-    username, password, db_name = argv[1], argv[2], argv[3]
+    engine = create_engine(f'mysql+mysqldb://{username}:{password}@localhost:3306/{db_name}')
 
-    # Database connection URL
-    db_url = URL(drivername='mysql+mysqldb',
-                 username=username,
-                 password=password,
-                 host='localhost',
-                 port=3306,
-                 database=db_name)
-
-    # Create engine and bind session
-    engine = create_engine(db_url, pool_pre_ping=True)
     Base.metadata.create_all(engine)
+
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # Create City and State objects
-    city = City(name='San Francisco')
-    state = State(name='California', cities=[city])
+    new_state = State(name="California")
+    new_city = City(name="San Francisco", state=new_state)
 
-    # Add objects to session, commit changes, and close session
-    session.add(state)
-    session.add(city)
+    session.add(new_state)
+    session.add(new_city)
     session.commit()
+
     session.close()
