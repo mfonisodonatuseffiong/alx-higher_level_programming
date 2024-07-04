@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Python - Inheritance
 What is a superclass, baseclass or parentclass
 What is a subclass
@@ -21,3 +22,7 @@ How to override a method or attribute inherited from the base class
 Which attributes or methods are available by heritage to subclasses
 What is the purpose of inheritance
 What are, when and how to use isinstance, issubclass, type and super built-in functions
+=======
+PYTHON -Inheritance
+
+>>>>>>> 58f9a67cb1a269562fdc796162ac1a88f914f3e5

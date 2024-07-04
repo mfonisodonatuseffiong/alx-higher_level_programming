@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 #!/usr/bin/python3
 
@@ -40,3 +41,15 @@
                                     """
                                         return dir(obj)
 
+=======
+#!/usr/bin/python3
+"""
+    This module returns the list of available attributes
+    and methods of an object
+"""
+
+
+def lookup(obj):
+    """This functions looks out for all attributes and methods of an object"""
+    return dir(obj)
+>>>>>>> 58f9a67cb1a269562fdc796162ac1a88f914f3e5
