@@ -6,7 +6,7 @@ const content = process.argv[3];
 
 if (!filename || !content) {
   console.error('Error: Missing file path or content.');
-  process.exit(1); // Exit the script with a non-zero code to indicate an error
+  process.exit(1);
 }
 
 fs.writeFile(filename, content, 'utf8', (error) => {
