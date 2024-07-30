@@ -11,6 +11,6 @@ if (!filename || !content) {
 
 fs.writeFile(filename, content, 'utf8', (error) => {
   if (error) {
-    console.log(error);
+    console.error(error);
   }
 });
