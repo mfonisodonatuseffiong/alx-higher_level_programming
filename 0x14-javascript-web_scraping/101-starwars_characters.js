@@ -14,23 +14,25 @@ request(apiUrl, (error, response, body) => {
   try {
     const movie = JSON.parse(body);
     const characters = movie.characters;
-    const charactersCount = characters.length;
-    let completedRequests = 0;
 
-    characters.forEach(characterUrl => {
-      request(characterUrl, (error, response, body) => {
-        if (!error) {
-          const character = JSON.parse(body);
-          console.log(character.name);
-        }
-        completedRequests++;
-
-        // Check if all requests are done before continuing
-        if (completedRequests === charactersCount) {
-          // All requests done
-        }
+    // Using promises to ensure order
+    const characterPromises = characters.map(characterUrl => {
+      return new Promise((resolve, reject) => {
+        request(characterUrl, (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(JSON.parse(body).name);
+          }
+        });
       });
     });
+
+    Promise.all(characterPromises)
+      .then(characterNames => {
+        characterNames.forEach(name => console.log(name));
+      })
+      .catch(error => console.error('Error:', error));
   } catch (e) {
     console.error('Error parsing JSON:', e);
   }
